@@ -46,7 +46,7 @@ suite('Sample test', function() {
 		);
 	});
 
-	test('use settings', function() {
+	test('use query string settings', function() {
 		assert.deepEqual(this.sample.stringToArray(
 				'#useFirstLineAsLabels=1&columnDelimiter=,&lineDelimiter=%0A\n' +
 				'Name,Email,Phone%0AMark,marc@be.com,998%0ANoemi,noemi@ac.co.uk,888'),

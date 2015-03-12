@@ -1,8 +1,8 @@
 var Sample = function() {
 	this._settings = {
-		useFirstLineAsLabels: 0,
-		columnDelimiter: ',',
-		lineDelimiter: '\n'
+		useFirstLineAsLabels : '0',
+		columnDelimiter      : ',',
+		lineDelimiter        : '\n'
 	};
 };
 
@@ -18,10 +18,19 @@ Sample.prototype.stringToArray = function(input) {
 		throw new TypeError('Only string type accepted!');
 	}
 	if (input[0] === '#') {
-		if (input.indexOf(Sample.LABEL_IDENTIFIER) !== 0) {
+		if (input.indexOf(Sample.LABEL_IDENTIFIER) === 0) {
+			this._settings.useFirstLineAsLabels = '1';
+		}
+		else {
 			this._parseSettings(input);
 		}
-		return this._splitWithLabel(input);
+		input = input.substr(input.indexOf('\n')+1);
+		if (this._settings.useFirstLineAsLabels === '1') {
+			return this._splitWithLabel(input);
+		}
+		else {
+			return this._splitWithNewLine(input);
+		}
 	}
 	else if (input.indexOf(this._settings.lineDelimiter) !== -1) {
 		return this._splitWithNewLine(input);
@@ -63,7 +72,7 @@ Sample.prototype._splitStringByComa = function(input) {
  * @private
  */
 Sample.prototype._splitWithLabel = function(input) {
-	input = input.substr(input.indexOf('\n')+1).split(this._settings.lineDelimiter);
+	input = input.split(this._settings.lineDelimiter);
 	var out = {labels : [], data: []}, line, i;
 	for (i in input) {
 		if (input.hasOwnProperty(i)) {
