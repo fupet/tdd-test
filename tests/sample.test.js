@@ -12,6 +12,15 @@ suite('Sample test', function() {
 			['luxembourg,kennedy,44\nbudapest,expo\nter,5-7 gyors,fo utca,9',
 				[['luxembourg', 'kennedy', '44'], ['budapest', 'expo'], ['ter', '5-7 gyors', 'fo utca', '9']]]
 		],
+		labelDataProvider = [
+			['#useFirstLineAsLabels=1&columnDelimiter=,&lineDelimiter=%0A\n' +
+			'Name,Email,Phone%0AMark,marc@be.com,998%0ANoemi,noemi@ac.co.uk,888', {
+				labels : ['Name', 'Email', 'Phone'],
+				data   : [['Mark', 'marc@be.com', '998'], ['Noemi', 'noemi@ac.co.uk', '888']]
+			}],
+			['#useFirstLineAsLabels=0&columnDelimiter=,&lineDelimiter=%0A\n' +
+			'Name,Email,Phone%0AMark,marc@be.com,998%0ANoemi,noemi@ac.co.uk,888', [['Name', 'Email', 'Phone'], ['Mark', 'marc@be.com', '998'], ['Noemi', 'noemi@ac.co.uk', '888']]]
+		],
 		testWithData = function(data) {
 			test('test data with provider', function() {
 				assert.deepEqual(this.sample.stringToArray(data[0]), data[1]);
@@ -46,14 +55,7 @@ suite('Sample test', function() {
 		);
 	});
 
-	test('use query string settings', function() {
-		assert.deepEqual(this.sample.stringToArray(
-				'#useFirstLineAsLabels=1&columnDelimiter=,&lineDelimiter=%0A\n' +
-				'Name,Email,Phone%0AMark,marc@be.com,998%0ANoemi,noemi@ac.co.uk,888'),
-			{
-				labels : ['Name', 'Email', 'Phone'],
-				data   : [['Mark', 'marc@be.com', '998'], ['Noemi', 'noemi@ac.co.uk', '888']]
-			}
-		);
+	suite('use query string settings', function() {
+		labelDataProvider.forEach(testWithData, this);
 	});
 });
