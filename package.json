@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "istanbul": "^0.3.5",
-    "jsdoc": "^3.3.0-alpha13"
+    "jsdoc": "^3.3.0-alpha13",
+    "jscs": "~1.11.3",
+    "jshint": "~2.6.3"
   }
 }
