@@ -1,4 +1,10 @@
-var Sample = function() {};
+var Sample = function() {
+	this._settings = {
+		useFirstLineAsLabels: 0,
+		columnDelimiter: ',',
+		lineDelimiter: '\n'
+	};
+};
 
 Sample.LABEL_IDENTIFIER = '#useFirstLineAsLabels\n';
 
@@ -11,13 +17,33 @@ Sample.prototype.stringToArray = function(input) {
 	if (typeof input !== 'string') {
 		throw new TypeError('Only string type accepted!');
 	}
-	if (input.indexOf(Sample.LABEL_IDENTIFIER) === 0) {
+	if (input[0] === '#') {
+		if (input.indexOf(Sample.LABEL_IDENTIFIER) !== 0) {
+			this._parseSettings(input);
+		}
 		return this._splitWithLabel(input);
 	}
-	else if (input.indexOf('\n') !== -1) {
+	else if (input.indexOf(this._settings.lineDelimiter) !== -1) {
 		return this._splitWithNewLine(input);
 	}
 	return this._splitStringByComa(input);
+};
+
+/**
+ * Parses the settings from the query string in the first line, and saves it.
+ * @param {string} input
+ * @private
+ */
+Sample.prototype._parseSettings = function(input) {
+	var settings = input.substr(1).split('\n').shift().split('&');
+	for (var i in settings) {
+		if (settings.hasOwnProperty(i)) {
+			settings[i] = settings[i].split('=');
+			if (settings[i][0] in this._settings) {
+				this._settings[settings[i][0]] = settings[i][1];
+			}
+		}
+	}
 };
 
 /**
@@ -27,7 +53,7 @@ Sample.prototype.stringToArray = function(input) {
  * @private
  */
 Sample.prototype._splitStringByComa = function(input) {
-	return input.split(',');
+	return input.split(this._settings.columnDelimiter);
 };
 
 /**
@@ -37,7 +63,7 @@ Sample.prototype._splitStringByComa = function(input) {
  * @private
  */
 Sample.prototype._splitWithLabel = function(input) {
-	input = input.substr(Sample.LABEL_IDENTIFIER.length).split('\n');
+	input = input.substr(input.indexOf('\n')+1).split(this._settings.lineDelimiter);
 	var out = {labels : [], data: []}, line, i;
 	for (i in input) {
 		if (input.hasOwnProperty(i)) {
@@ -60,7 +86,7 @@ Sample.prototype._splitWithLabel = function(input) {
  * @private
  */
 Sample.prototype._splitWithNewLine = function(input) {
-	input = input.split('\n');
+	input = input.split(this._settings.lineDelimiter);
 	for (var i in input) {
 		if (input.hasOwnProperty(i)) {
 			input[i] = this._splitStringByComa(input[i]);

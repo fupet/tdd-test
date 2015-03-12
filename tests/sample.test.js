@@ -45,4 +45,15 @@ suite('Sample test', function() {
 			}
 		);
 	});
+
+	test('use settings', function() {
+		assert.deepEqual(this.sample.stringToArray(
+				'#useFirstLineAsLabels=1&columnDelimiter=,&lineDelimiter=%0A\n' +
+				'Name,Email,Phone%0AMark,marc@be.com,998%0ANoemi,noemi@ac.co.uk,888'),
+			{
+				labels : ['Name', 'Email', 'Phone'],
+				data   : [['Mark', 'marc@be.com', '998'], ['Noemi', 'noemi@ac.co.uk', '888']]
+			}
+		);
+	});
 });
