@@ -1,0 +1,25 @@
+{
+  "name": "elevator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run-script mocha",
+    "mocha": "node_modules\\.bin\\mocha -u tdd -R spec tests/*.js",
+    "coverage": "node_modules\\.bin\\istanbul cover node_modules/mocha/bin/_mocha -- -u tdd -R spec tests/*.js",
+    "jshint": "node_modules\\.bin\\jshint libs tests",
+    "jscs": "node_modules\\.bin\\jscs -c .jscsrc libs tests",
+    "jsdoc": "node_modules\\.bin\\jsdoc -c .jsdocrc libs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1",
+    "sinon": "^1.12.1"
+  },
+  "dependencies": {
+    "istanbul": "^0.3.5",
+    "jsdoc": "^3.3.0-alpha13"
+  }
+}
