@@ -1,6 +1,4 @@
 var assert = require('chai').assert,
-	sinon = require('sinon'),
-
 	Sample = require('../libs/sample');
 
 suite('Sample test', function() {
